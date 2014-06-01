@@ -1,7 +1,7 @@
 import json
 import os
 
-from StringIO import StringIO
+from io import BytesIO
 from contextlib import closing, contextmanager
 from datetime import datetime
 from mox import Mox, IgnoreArg
@@ -136,7 +136,7 @@ class TestDataStore(TestCase):
             pj('my-id', 'readme.txt'),
         ])
         fs.open_for_reading(os.path.join('my-id', 'item-15.json')).AndReturn(
-            closing(StringIO('{"name":"the_name"}'))
+            closing(BytesIO('{"name":"the_name"}'))
         )
         self.mox.ReplayAll()
 
@@ -181,11 +181,11 @@ class TestDataStore(TestCase):
             first_version
         ])
         fs.open_for_reading(first_version).AndReturn(
-            closing(StringIO('{"name":"the name"}'))
+            closing(BytesIO('{"name":"the name"}'))
         )
 
         new_version = os.path.join('my-id', 'item-1.json')
-        new_content = StringIO()
+        new_content = BytesIO()
         @contextmanager
         def not_closing_content():
             yield new_content
@@ -217,7 +217,7 @@ class TestDataStore(TestCase):
 
         fp = os.path.join('my-id', 'item-32.json')
 
-        fs.open_new_file(fp).AndReturn(closing(StringIO()))
+        fs.open_new_file(fp).AndReturn(closing(BytesIO()))
         fs.open_new_file(fp).AndRaise(FileAlreadyExistsException('file already exists'))
 
         self.mox.ReplayAll()
@@ -244,11 +244,11 @@ class TestDataStore(TestCase):
         fs.listdirs().AndReturn(['__temp', 'item1', 'item2'])
         fs.listfiles('item1').AndReturn([items[0]])
         fs.open_for_reading(items[0]).AndReturn(
-            closing(StringIO('{"name":"a"}'))
+            closing(BytesIO('{"name":"a"}'))
         )
         fs.listfiles('item2').AndReturn([items[1]])
         fs.open_for_reading(items[1]).AndReturn(
-            closing(StringIO('{"name":"b"}'))
+            closing(BytesIO('{"name":"b"}'))
         )
         self.mox.ReplayAll()
 
