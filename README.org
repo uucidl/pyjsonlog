@@ -1,5 +1,9 @@
+* Abstract
+
 A python package implementing a filesystem based store of JSON
 datastructures, where older versions are never deleted.
+
+Travis-CI says [[https://travis-ci.org/uucidl/pyjsonlog.svg?branch=master]]
 
 * Why should I use json-log-store?
 
