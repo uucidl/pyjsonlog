@@ -77,10 +77,10 @@ class TestDataStoreFS(TestCase):
         dirpath = os.path.join(self.tempdir, 'd')
 
         os.mkdir(dirpath)
-        self.assertEquals([
+        self.assertEquals(set([
             os.path.join(self.tempdir, '__temp'),
             dirpath,
-        ], list(self.fs.listdirs()))
+        ]), set(self.fs.listdirs()))
 
     def test_it_opens_file_for_reading(self):
         sentinel = 'abcdefg'
