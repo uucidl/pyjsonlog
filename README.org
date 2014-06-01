@@ -1,0 +1,71 @@
+A python package implementing a filesystem based store of JSON
+datastructures, where older versions are never deleted.
+
+* Why should I use json-log-store?
+
+When developing a python-based application or command line tool, you
+can use this file store to store your data.
+
+Iterating on the solution or creating composite solutions made of
+multiple tools can then be done with the confidence you will not lose
+any data.
+
+* Application area
+
+- Python applications
+- Data can be serialized as JSON
+- Mostly reads, few writes
+
+* Using
+
+#+begin_src python
+import os
+from jsonlog import DataStore, DataStoreFS
+
+root_dir = "<somewhere on your filesystem>"
+os.makedirs(root_dir)
+ds = DataStore(DataStoreFS(root_dir))
+
+# put first version in the store
+os.makedirs(os.path.join(root_dir, 'my-item'))
+ds.put('item', 'my-item', dict(version=0))
+
+# read and update the item
+item = ds.get('my-item')
+item['info'] = 'Hello, World'
+ds.put('item', 'my-item', item)
+#+end_src
+
+Then you should be able to see in <root_dir>/my-item/:
+
+#+begin_example
+item-1.json
+item-2.json
+#+end_example
+
+* Contributing
+
+Here are the steps to follow to get a working development environment:
+
+Create a virtual environment and activate it
+
+#+begin_example
+$ virtualenv venv
+$ . venv/bin/activate
+#+end_example
+
+Install development dependencies
+
+#+begin_example
+$ pip install -r requirements.txt dev_requirements.txt
+#+end_example
+
+With the virtual environment active, test your changes before submitting:
+
+#+begin_example
+$ nosetests -s tests
+#+end_example
+
+* License
+
+see [[LICENSE]]
